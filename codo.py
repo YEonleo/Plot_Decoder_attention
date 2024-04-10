@@ -69,7 +69,7 @@ class codo:
                     head = self.model.lm_head(i)
                     lm_logits.append(head)
 
-            save_path = os.path.join("./attention_plots", f"results_{input_text2[-3:]}_context{context}")
+            save_path = os.path.join("./attention_plots", f"results_{input_text2[-3:]}_context_{context}")
             os.makedirs(save_path, exist_ok=True)
 
             if plot_layer == 'all':

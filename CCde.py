@@ -34,7 +34,9 @@ def create_demo_text():
     return demo_text
 
 
-def create_prompt_from_dataset(dataset, include_context=True):
+def create_prompt_from_dataset(dataset, include_context):
+
+    
     prompts, answers = [], []
     for item in dataset:
         question = item['question']
@@ -115,8 +117,12 @@ def main(args):
         premature_layer = None
         candidate_premature_layers = early_exit_layers[:-1]
         premature_layer_dist = {l:0 for l in candidate_premature_layers}
-    
-    prompts, answers = create_prompt_from_dataset(train_dataset, include_context=args.context)
+        
+    if args.context.lower() in ['true', '1', 't', 'y', 'yes']:
+        include_context = True
+    else:
+        include_context = False
+    prompts, answers = create_prompt_from_dataset(train_dataset, include_context=include_context)
     prompts = prompts[10:20]
     answers = answers[10:20]
 
@@ -145,7 +151,7 @@ if __name__ == "__main__":
     parser.add_argument("--max-new-tokens", type=int, default=50)
     #plot 방식
     parser.add_argument("--plot_layer", type=str, default="all")
-    parser.add_argument("--context", type=bool, default=False)
+    parser.add_argument("--context", type=str, default='False')
     args = parser.parse_args()
 
     
