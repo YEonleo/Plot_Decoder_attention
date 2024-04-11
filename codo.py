@@ -110,11 +110,12 @@ def visualize_all_tokens_across_all_layers(attentions, tokenizer, all_ids, input
                 fig, axs = plt.subplots(1, 2, figsize=(70, 8))
                 # 어텐션 스코어 시각화 부분
                 attention_scores = layer_attention[0, :, input_ids.size(-1) + token_index, :].mean(0).cpu().numpy()
-                token_labels = input_tokens + output_tokens[:token_index + 1]
+                attention_scores = np.delete(attention_scores, input_ids.size(-1) + token_index)  # 자기 자신 제외
+                token_labels = input_tokens + output_tokens[:token_index]  #
                 axs[0].bar(range(len(token_labels)), attention_scores[:len(token_labels)])
                 axs[0].set_xticks(range(len(token_labels)))
                 axs[0].set_xticklabels(token_labels, rotation=90)
-                axs[0].set_title(f"Layer {layer_index + 1} Token {token_index + 1} Attention Scores")
+                axs[0].set_title(f"Layer {layer_index + 1} Token {token_index + 1}_{output_tokens[token_index]}_Attention Scores")
 
                 # 상위 토큰 확률 시각화 부분
                 if lm_logits:
